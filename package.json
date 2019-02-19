@@ -1,0 +1,38 @@
+{
+  "name": "pg-redis",
+  "version": "0.0.1",
+  "description": "redis caching for pg (node postgres)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwalski/pg-redis.git"
+  },
+  "keywords": [
+    "node",
+    "postgres",
+    "pg",
+    "redis",
+    "ioredis",
+    "cache",
+    "caching"
+  ],
+  "author": "Gi Singh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kwalski/pg-redis/issues"
+  },
+  "homepage": "https://github.com/kwalski/pg-redis#readme",
+  "dependencies": {
+    "farmhash": "^2.1.0",
+    "string64": "^2.0.0"
+  },
+  "devDependencies": {
+    "async-redis": "^1.1.7",
+    "pg": "^7.8.0",
+    "pg-pool": "^2.0.6",
+    "redis": "^2.8.0"
+  }
+}
