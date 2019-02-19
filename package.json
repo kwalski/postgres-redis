@@ -4,7 +4,7 @@
   "description": "redis caching for pg (node postgres)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node postgres-redis.test"
   },
   "repository": {
     "type": "git",
