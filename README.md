@@ -1,9 +1,9 @@
 
 
-# pg-redis :rocket:
+# postgres-redis :rocket:
 
 Transform your postgres server with `Redis` caching layer for `pg`.
-- PgRedis checks if there is a cached result for the query in redis 
+- PostgresRedis checks if there is a cached result for the query in redis 
 - if not found in cache, it will retrieve data from postgres and on successful result cache it in redis for future queries
 - if redis is unavailable or errors, query will be served by postgres
 
@@ -48,27 +48,27 @@ Or you can **provide your own hash *per* query**, eg, *prefix.*`p.123` to repres
 ## Getting Started
 
 ### Pre-Requisites
-postgres ([pg](https://www.npmjs.com/package/pg)/[pg-pool](https://www.npmjs.com/package/pg-pool)), and redis ([redis](https://www.npmjs.com/package/redis)/[ioredis](https://www.npmjs.com/package/ioredis)). Internally PgRedis relies on pg/pg-pool's `query` function and redis's `get` and `set` functions
+postgres ([pg](https://www.npmjs.com/package/pg)/[pg-pool](https://www.npmjs.com/package/pg-pool)), and redis ([redis](https://www.npmjs.com/package/redis)/[ioredis](https://www.npmjs.com/package/ioredis)). Internally PostgresRedis relies on pg/pg-pool's `query` function and redis's `get` and `set` functions
 
 For async/await api, you can use pg/pg-pool's promise api and [redis-async](https://www.npmjs.com/package/pg-redis)
 
 ### Installing
-`npm i pg-redis --save` 
+`npm i postgres-redis --save` 
 
 ### Usage
 ```
-const { PgRedis, HashTypes } = require("pg-redis");
+const { PostgresRedis, HashTypes } = require("postgres-redis");
 
 // or if you use async await api
-const { PgRedisAsync, HashTypes } = require("pg-redis");
+const { PostgresRedisAsync, HashTypes } = require("postgres-redis");
 ```
 
-####  Creating an instance of PgRedis requires 
-- a pg connection or pg-pool (PgRedis will call it's query method when no cache found)
-- redis connection (PgRedis will call its set and get methods)
+####  Creating an instance of PostgresRedis requires 
+- a pg connection or pg-pool (PostgresRedis will call it's query method when no cache found)
+- redis connection (PostgresRedis will call its set and get methods)
 - cache options (optional)  
 
-####  Creating an instance of PgRedisAsync requires 
+####  Creating an instance of PostgresRedisAsync requires 
 - a pg connection or pool promise 
 - async redis
 	```
@@ -86,17 +86,17 @@ const cacheOptions = {
     hashType: HashTypes.farmhash32 //default
 };
 
-const pgRedis = new PgRedis(
+const postgresRedis = new PostgresRedis(
     pgConnection,
     redisConnection,
     cacheOptions
 );
 ```
-Now if you wish to get something from cache, just use pgRedis.query instead of your pg connection's query. **Use your pg/pg-pool normally to bypass cache**
+Now if you wish to get something from cache, just use postgresRedis.query instead of your pg connection's query. **Use your pg/pg-pool normally to bypass cache**
 ```
 // query can be string 
 // or object { text:'select 1 + $1', values:[2] }
-pgRedis.query('select * from logs where id =$1",["some-log-id"], ( err, { rows, fields } )=>{
+postgresRedis.query('select * from logs where id =$1",["some-log-id"], ( err, { rows, fields } )=>{
 	console.log(rows)
 	// if served by Redis, fields value is something like [ { cacheHit: 'sql.Dh9VSNbN5V$' } ]
 	// else pg fields
@@ -106,7 +106,7 @@ pgRedis.query('select * from logs where id =$1",["some-log-id"], ( err, { rows, 
 or if you like promises, then:
 
 ```
-const pgRedis = new PgRedisAsync(
+const postgresRedis = new PostgresRedisAsync(
     pgConnection,
     redisConnection,
     cacheOptions
@@ -115,7 +115,7 @@ const pgRedis = new PgRedisAsync(
 ... in an async function ...
 try{
 
-	const { rows, fields }=await pgRedis.query("select 1+$1+$2",[2,3]);
+	const { rows, fields }=await postgresRedis.query("select 1+$1+$2",[2,3]);
 
 }catch(err){
 	// handle err
@@ -125,7 +125,7 @@ try{
 You can override cache options per query as below:
 
 ```
-pgRedis.query('select * from logs where id =$1",["some-log-id"],
+postgresRedis.query('select * from logs where id =$1",["some-log-id"],
 	{ //cache option
 		keyPrefix:'sql-abc-', 
 		expire:3600, 
@@ -140,7 +140,7 @@ pgRedis.query('select * from logs where id =$1",["some-log-id"],
 
 
 // promise api
-const { rows, fields }=await pgRedis.query("select 1+$1+$2",[2,3],
+const { rows, fields }=await postgresRedis.query("select 1+$1+$2",[2,3],
    { //cache option
 		keyPrefix:'sql-abc-', 
 		expire:3600, 

@@ -16,7 +16,7 @@ const redisConnection = Redis.createClient(redisOptions);
 
 const redisConnectionAsync = asyncRedis.createClient(redisOptions);
 
-const { PgRedis, PgRedisAsync, HashTypes } = require("./index");
+const { PostgresRedis, PostgresRedisAsync, HashTypes } = require("./index");
 
 const cacheOptions = {
     expire: 40, // seconds 
@@ -24,12 +24,12 @@ const cacheOptions = {
     hashType:HashTypes.blake2b512
 };
 
-const pgRedisAsync = new PgRedisAsync(
+const postgresRedisAsync = new PostgresRedisAsync(
     pool,
     redisConnectionAsync,
     cacheOptions
 );
-const pgRedis = new PgRedis (
+const postgresRedis = new PostgresRedis (
     pool,
     redisConnection,
     cacheOptions
@@ -38,7 +38,7 @@ const pgRedis = new PgRedis (
 
 
 const qAsync = async() => { 
-    const {rows,fields}=await pgRedisAsync.query("select 1+$1",[1],{expire:100});
+    const {rows,fields}=await postgresRedisAsync.query("select 1+$1",[1],{expire:100});
     
     console.log('qAsync:',rows,fields)
 };
@@ -49,7 +49,7 @@ setTimeout(() => qAsync(), 300);
 
 
 const qSync =  () => {
-    pgRedis.query('select 1+$1',[2],{expire:100},(err,{rows,fields})=>console.log('qSync:',err,rows,fields))
+    postgresRedis.query('select 1+$1',[2],{expire:100},(err,{rows,fields})=>console.log('qSync:',err,rows,fields))
 };
  
 setTimeout(() => qSync(), 1100);
@@ -59,7 +59,7 @@ setTimeout(() => qSync(), 1300);
 
 
 const qAsync2 = async() => { 
-    const {rows,fields}=await pgRedisAsync.query( {text:"select 1+$1",values:[2]},{expire:100, hashType:HashTypes.farmhash64});
+    const {rows,fields}=await postgresRedisAsync.query( {text:"select 1+$1",values:[2]},{expire:100, hashType:HashTypes.farmhash64});
     
     console.log('qAsync2:',rows,fields)
 };

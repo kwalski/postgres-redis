@@ -44,7 +44,7 @@ const hash = (sql, hashType) => {
     }
 };
 
-class PgRedis {
+class PostgresRedis {
     constructor(pgConn, redisClient, cacheOptions) {        
         this.pgConn = pgConn;
         this.redisClient = redisClient;
@@ -118,7 +118,7 @@ class PgRedis {
 
 // PROMISE API
 
-class PgRedisAsync {
+class PostgresRedisAsync {
     constructor(pgConn, redisClient, cacheOptions) {
         this.pgConn = pgConn;
         this.redisClient = redisClient;
@@ -199,4 +199,4 @@ class PgRedisAsync {
     }
 }
 
-module.exports = { PgRedis, PgRedisAsync, HashTypes };
+module.exports = { PostgresRedis, PostgresRedisAsync, HashTypes };

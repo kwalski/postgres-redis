@@ -1,5 +1,5 @@
 {
-  "name": "pg-redis",
+  "name": "postgres-redis",
   "version": "0.0.1",
   "description": "redis caching for pg (node postgres)",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kwalski/pg-redis.git"
+    "url": "git+https://github.com/kwalski/postgres-redis.git"
   },
   "keywords": [
     "node",
