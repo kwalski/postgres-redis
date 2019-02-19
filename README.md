@@ -48,9 +48,9 @@ Or you can **provide your own hash *per* query**, eg, *prefix.*`p.123` to repres
 ## Getting Started
 
 ### Pre-Requisites
-postgres ([pg](https://www.npmjs.com/package/pg)/[pg-pool](https://www.npmjs.com/package/pg-pool)), and redis ([redis](https://www.npmjs.com/package/redis)/[ioredis](https://www.npmjs.com/package/ioredis)). Internally PostgresRedis relies on pg/pg-pool's `query` function and redis's `get` and `set` functions
+node postgres ([pg](https://www.npmjs.com/package/pg)/[pg-pool](https://www.npmjs.com/package/pg-pool)), and redis ([redis](https://www.npmjs.com/package/redis)/[ioredis](https://www.npmjs.com/package/ioredis)). Internally PostgresRedis relies on pg/pg-pool's `query` function and redis's `get` and `set` functions
 
-For async/await api, you can use pg/pg-pool's promise api and [redis-async](https://www.npmjs.com/package/pg-redis)
+For async/await api, you can use pg/pg-pool's promise api and [async-redis](https://www.npmjs.com/package/async-redis)
 
 ### Installing
 `npm i postgres-redis --save` 
@@ -95,7 +95,8 @@ const postgresRedis = new PostgresRedis(
 Now if you wish to get something from cache, just use postgresRedis.query instead of your pg connection's query. **Use your pg/pg-pool normally to bypass cache**
 ```
 // query can be string 
-// or object { text:'select 1 + $1', values:[2] }
+// or object, eg: { text:'select 1 + $1', values:[2] }
+
 postgresRedis.query('select * from logs where id =$1",["some-log-id"], ( err, { rows, fields } )=>{
 	console.log(rows)
 	// if served by Redis, fields value is something like [ { cacheHit: 'sql.Dh9VSNbN5V$' } ]
